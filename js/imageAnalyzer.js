@@ -1,42 +1,65 @@
-// Image analysis for brightness, edges, and feature detection
+// Image analysis with better contrast and edge detection
 
 class ImageAnalyzer {
   constructor(image) {
     this.image = image;
+    this.width = image.width;
+    this.height = image.height;
+    
+    // Create canvas and get raw data
     this.canvas = document.createElement('canvas');
     this.canvas.width = image.width;
     this.canvas.height = image.height;
     this.ctx = this.canvas.getContext('2d');
     this.ctx.drawImage(image, 0, 0);
-    this.imageData = this.ctx.getImageData(0, 0, image.width, image.height);
-    this.width = image.width;
-    this.height = image.height;
+    this.rawData = this.ctx.getImageData(0, 0, image.width, image.height);
     
-    // Cache for edge strength map
+    // Pre-compute grayscale
+    this.grayscale = new Float32Array(image.width * image.height);
+    this.computeGrayscale();
+    
+    // Edge detection cache
     this._edgeMap = null;
+    this._sobelX = null;
+    this._sobelY = null;
   }
   
-  // Get brightness at normalized coordinates (0-1)
+  computeGrayscale() {
+    const data = this.rawData.data;
+    for (let i = 0; i < this.grayscale.length; i++) {
+      const idx = i * 4;
+      // Luminance
+      this.grayscale[i] = (0.299 * data[idx] + 0.587 * data[idx + 1] + 0.114 * data[idx + 2]) / 255;
+    }
+  }
+  
+  // Get raw brightness at pixel coords
+  getRawBrightness(px, py) {
+    if (px < 0 || px >= this.width || py < 0 || py >= this.height) return 0;
+    return this.grayscale[py * this.width + px];
+  }
+  
+  // Get processed brightness at normalized coordinates (0-1)
   getBrightness(nx, ny, cfg = {}) {
     const px = Math.floor(nx * (this.width - 1));
     const py = Math.floor(ny * (this.height - 1));
     
-    if (px < 0 || px >= this.width || py < 0 || py >= this.height) {
-      return 0;
+    let brightness = this.getRawBrightness(px, py);
+    
+    // Apply gamma
+    const gamma = cfg.gamma || 1.0;
+    if (gamma !== 1.0) {
+      brightness = Math.pow(brightness, 1 / gamma);
     }
     
-    const i = (py * this.width + px) * 4;
-    const r = this.imageData.data[i];
-    const g = this.imageData.data[i + 1];
-    const b = this.imageData.data[i + 2];
-    
-    // Luminance formula
-    let brightness = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    
-    // Apply contrast adjustment
-    const contrast = cfg.contrast || 1;
-    if (contrast !== 1) {
-      brightness = Math.pow(brightness, 1 / contrast);
+    // Apply contrast (S-curve for better separation)
+    const contrast = cfg.contrast || 1.0;
+    if (contrast !== 1.0) {
+      // S-curve contrast
+      brightness = brightness - 0.5;
+      brightness = brightness * contrast;
+      brightness = brightness / (1 + Math.abs(brightness)); // Soft clamp
+      brightness = brightness + 0.5;
     }
     
     // Apply brightness shift
@@ -54,7 +77,7 @@ class ImageAnalyzer {
     return brightness;
   }
   
-  // Get bilinear interpolated brightness
+  // Bilinear interpolated brightness
   getBrightnessSmooth(nx, ny, cfg = {}) {
     const x = nx * (this.width - 1);
     const y = ny * (this.height - 1);
@@ -67,10 +90,10 @@ class ImageAnalyzer {
     const fx = x - x0;
     const fy = y - y0;
     
-    const b00 = this.getBrightnessAt(x0, y0, cfg);
-    const b10 = this.getBrightnessAt(x1, y0, cfg);
-    const b01 = this.getBrightnessAt(x0, y1, cfg);
-    const b11 = this.getBrightnessAt(x1, y1, cfg);
+    const b00 = this.getBrightness(x0 / (this.width - 1), y0 / (this.height - 1), cfg);
+    const b10 = this.getBrightness(x1 / (this.width - 1), y0 / (this.height - 1), cfg);
+    const b01 = this.getBrightness(x0 / (this.width - 1), y1 / (this.height - 1), cfg);
+    const b11 = this.getBrightness(x1 / (this.width - 1), y1 / (this.height - 1), cfg);
     
     const b0 = b00 * (1 - fx) + b10 * fx;
     const b1 = b01 * (1 - fx) + b11 * fx;
@@ -78,114 +101,114 @@ class ImageAnalyzer {
     return b0 * (1 - fy) + b1 * fy;
   }
   
-  // Internal: get brightness at pixel coordinates
-  getBrightnessAt(px, py, cfg = {}) {
-    if (px < 0 || px >= this.width || py < 0 || py >= this.height) {
-      return 0;
-    }
+  // Compute Sobel edge detection
+  computeSobel() {
+    if (this._sobelX) return;
     
-    const i = (py * this.width + px) * 4;
-    const r = this.imageData.data[i];
-    const g = this.imageData.data[i + 1];
-    const b = this.imageData.data[i + 2];
+    const w = this.width;
+    const h = this.height;
+    this._sobelX = new Float32Array(w * h);
+    this._sobelY = new Float32Array(w * h);
+    this._edgeMap = new Float32Array(w * h);
     
-    let brightness = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    
-    const contrast = cfg.contrast || 1;
-    if (contrast !== 1) {
-      brightness = Math.pow(brightness, 1 / contrast);
-    }
-    
-    const brightnessShift = cfg.brightness || 0;
-    brightness = Math.max(0, Math.min(1, brightness + brightnessShift));
-    
-    if (cfg.invertBrightness) {
-      brightness = 1 - brightness;
-    }
-    
-    return brightness;
-  }
-  
-  // Calculate edge strength using Sobel operator
-  getEdgeStrength(nx, ny) {
-    const delta = 1 / Math.max(this.width, this.height);
-    
-    // Sobel kernels
-    const left = this.getBrightness(nx - delta, ny);
-    const right = this.getBrightness(nx + delta, ny);
-    const top = this.getBrightness(nx, ny - delta);
-    const bottom = this.getBrightness(nx, ny + delta);
-    
-    const topLeft = this.getBrightness(nx - delta, ny - delta);
-    const topRight = this.getBrightness(nx + delta, ny - delta);
-    const bottomLeft = this.getBrightness(nx - delta, ny + delta);
-    const bottomRight = this.getBrightness(nx + delta, ny + delta);
-    
-    // Sobel gradients
-    const gx = (topRight + 2 * right + bottomRight) - (topLeft + 2 * left + bottomLeft);
-    const gy = (bottomLeft + 2 * bottom + bottomRight) - (topLeft + 2 * top + topRight);
-    
-    return Math.sqrt(gx * gx + gy * gy);
-  }
-  
-  // Get gradient direction at a point
-  getGradient(nx, ny) {
-    const delta = 1 / Math.max(this.width, this.height);
-    
-    const left = this.getBrightness(nx - delta, ny);
-    const right = this.getBrightness(nx + delta, ny);
-    const top = this.getBrightness(nx, ny - delta);
-    const bottom = this.getBrightness(nx, ny + delta);
-    
-    return {
-      dx: (right - left) / (2 * delta),
-      dy: (bottom - top) / (2 * delta)
-    };
-  }
-  
-  // Build edge map for entire image (cached)
-  buildEdgeMap(resolution = 100) {
-    if (this._edgeMap && this._edgeMap.resolution === resolution) {
-      return this._edgeMap;
-    }
-    
-    const map = new Float32Array(resolution * resolution);
     let maxEdge = 0;
     
-    for (let y = 0; y < resolution; y++) {
-      for (let x = 0; x < resolution; x++) {
-        const nx = x / (resolution - 1);
-        const ny = y / (resolution - 1);
-        const edge = this.getEdgeStrength(nx, ny);
-        map[y * resolution + x] = edge;
+    for (let y = 1; y < h - 1; y++) {
+      for (let x = 1; x < w - 1; x++) {
+        const idx = y * w + x;
+        
+        // Sobel kernels
+        const tl = this.grayscale[(y-1) * w + (x-1)];
+        const t  = this.grayscale[(y-1) * w + x];
+        const tr = this.grayscale[(y-1) * w + (x+1)];
+        const l  = this.grayscale[y * w + (x-1)];
+        const r  = this.grayscale[y * w + (x+1)];
+        const bl = this.grayscale[(y+1) * w + (x-1)];
+        const b  = this.grayscale[(y+1) * w + x];
+        const br = this.grayscale[(y+1) * w + (x+1)];
+        
+        const gx = (tr + 2*r + br) - (tl + 2*l + bl);
+        const gy = (bl + 2*b + br) - (tl + 2*t + tr);
+        
+        this._sobelX[idx] = gx;
+        this._sobelY[idx] = gy;
+        
+        const edge = Math.sqrt(gx*gx + gy*gy);
+        this._edgeMap[idx] = edge;
         maxEdge = Math.max(maxEdge, edge);
       }
     }
     
-    // Normalize
+    // Normalize edge map
     if (maxEdge > 0) {
-      for (let i = 0; i < map.length; i++) {
-        map[i] /= maxEdge;
+      for (let i = 0; i < this._edgeMap.length; i++) {
+        this._edgeMap[i] /= maxEdge;
+      }
+    }
+  }
+  
+  // Get edge strength at normalized coords
+  getEdgeStrength(nx, ny) {
+    this.computeSobel();
+    
+    const px = Math.floor(nx * (this.width - 1));
+    const py = Math.floor(ny * (this.height - 1));
+    
+    if (px < 1 || px >= this.width - 1 || py < 1 || py >= this.height - 1) return 0;
+    
+    return this._edgeMap[py * this.width + px];
+  }
+  
+  // Get gradient direction at normalized coords
+  getGradient(nx, ny) {
+    this.computeSobel();
+    
+    const px = Math.floor(nx * (this.width - 1));
+    const py = Math.floor(ny * (this.height - 1));
+    
+    if (px < 1 || px >= this.width - 1 || py < 1 || py >= this.height - 1) {
+      return { dx: 0, dy: 0, magnitude: 0 };
+    }
+    
+    const idx = py * this.width + px;
+    const dx = this._sobelX[idx];
+    const dy = this._sobelY[idx];
+    
+    return {
+      dx,
+      dy,
+      magnitude: Math.sqrt(dx*dx + dy*dy),
+      angle: Math.atan2(dy, dx)
+    };
+  }
+  
+  // Get local contrast (variance in neighborhood)
+  getLocalContrast(nx, ny, radius = 0.02) {
+    const cx = Math.floor(nx * (this.width - 1));
+    const cy = Math.floor(ny * (this.height - 1));
+    const r = Math.max(1, Math.floor(radius * Math.min(this.width, this.height)));
+    
+    let sum = 0, sumSq = 0, count = 0;
+    
+    for (let dy = -r; dy <= r; dy++) {
+      for (let dx = -r; dx <= r; dx++) {
+        const px = cx + dx;
+        const py = cy + dy;
+        if (px >= 0 && px < this.width && py >= 0 && py < this.height) {
+          const v = this.grayscale[py * this.width + px];
+          sum += v;
+          sumSq += v * v;
+          count++;
+        }
       }
     }
     
-    this._edgeMap = { data: map, resolution, maxEdge };
-    return this._edgeMap;
-  }
-  
-  // Sample edge strength from cached map
-  getEdgeStrengthFast(nx, ny) {
-    if (!this._edgeMap) {
-      this.buildEdgeMap();
-    }
+    if (count < 2) return 0;
     
-    const res = this._edgeMap.resolution;
-    const x = Math.floor(nx * (res - 1));
-    const y = Math.floor(ny * (res - 1));
+    const mean = sum / count;
+    const variance = (sumSq / count) - (mean * mean);
     
-    if (x < 0 || x >= res || y < 0 || y >= res) return 0;
-    
-    return this._edgeMap.data[y * res + x];
+    return Math.sqrt(Math.max(0, variance));
   }
   
   // Get aspect ratio
@@ -193,18 +216,25 @@ class ImageAnalyzer {
     return this.width / this.height;
   }
   
-  // Create thumbnail for preview
-  createThumbnail(maxSize = 200) {
-    const scale = Math.min(maxSize / this.width, maxSize / this.height);
-    const w = Math.floor(this.width * scale);
-    const h = Math.floor(this.height * scale);
+  // Create debug visualization
+  createEdgeVisualization() {
+    this.computeSobel();
     
     const canvas = document.createElement('canvas');
-    canvas.width = w;
-    canvas.height = h;
+    canvas.width = this.width;
+    canvas.height = this.height;
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(this.image, 0, 0, w, h);
+    const imgData = ctx.createImageData(this.width, this.height);
     
-    return canvas.toDataURL('image/jpeg', 0.8);
+    for (let i = 0; i < this._edgeMap.length; i++) {
+      const v = Math.floor(this._edgeMap[i] * 255);
+      imgData.data[i * 4] = v;
+      imgData.data[i * 4 + 1] = v;
+      imgData.data[i * 4 + 2] = v;
+      imgData.data[i * 4 + 3] = 255;
+    }
+    
+    ctx.putImageData(imgData, 0, 0);
+    return canvas.toDataURL();
   }
 }

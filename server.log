@@ -106,3 +106,205 @@ Server stopped
 2025-12-01 13:49:23,037 - INFO - 127.0.0.1 - - [01/Dec/2025 13:49:23] "GET /js/app.js HTTP/1.1" 200 -
 2025-12-01 13:49:47,237 - INFO - 
 Server stopped
+2025-12-01 14:02:25,771 - INFO - Server running at http://localhost:8000
+2025-12-01 14:02:25,771 - INFO - Press Ctrl+C to stop
+2025-12-01 14:02:39,842 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:39] "GET / HTTP/1.1" 200 -
+2025-12-01 14:02:39,874 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:39] code 404, message File not found
+2025-12-01 14:02:39,874 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:39] "GET /css/styles.css HTTP/1.1" 404 -
+2025-12-01 14:02:40,025 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:40] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:02:40,190 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:40] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:02:40,192 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:40] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:02:40,193 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:40] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:02:40,195 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:40] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:02:40,197 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:40] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:02:40,333 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:40] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:02:40,502 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:40] code 404, message File not found
+2025-12-01 14:02:40,502 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:40] "GET /js/ui.js HTTP/1.1" 404 -
+2025-12-01 14:02:40,503 - INFO - 127.0.0.1 - - [01/Dec/2025 14:02:40] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:03:06,516 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:06] "GET / HTTP/1.1" 200 -
+2025-12-01 14:03:06,534 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:06] code 404, message File not found
+2025-12-01 14:03:06,534 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:06] "GET /css/styles.css HTTP/1.1" 404 -
+2025-12-01 14:03:06,782 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:06] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:03:06,850 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:06] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:03:06,852 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:06] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:03:06,853 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:06] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:03:06,855 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:06] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:03:06,856 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:06] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:03:07,087 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:07] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:03:07,164 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:07] code 404, message File not found
+2025-12-01 14:03:07,164 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:07] "GET /js/ui.js HTTP/1.1" 404 -
+2025-12-01 14:03:07,165 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:07] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:03:45,044 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:45] code 404, message File not found
+2025-12-01 14:03:45,045 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:45] "GET /css/styles.css HTTP/1.1" 404 -
+2025-12-01 14:03:45,060 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:45] code 404, message File not found
+2025-12-01 14:03:45,060 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:45] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:03:46,764 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:46] "GET / HTTP/1.1" 200 -
+2025-12-01 14:03:47,066 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] code 404, message File not found
+2025-12-01 14:03:47,066 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /css/styles.css HTTP/1.1" 404 -
+2025-12-01 14:03:47,096 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:03:47,111 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:03:47,112 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:03:47,114 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:03:47,116 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:03:47,371 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:03:47,405 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:03:47,421 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] code 404, message File not found
+2025-12-01 14:03:47,422 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /js/ui.js HTTP/1.1" 404 -
+2025-12-01 14:03:47,422 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:03:47,424 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] code 404, message File not found
+2025-12-01 14:03:47,424 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:47] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:03:55,652 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:55] "GET / HTTP/1.1" 200 -
+2025-12-01 14:03:55,678 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:55] code 404, message File not found
+2025-12-01 14:03:55,678 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:55] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:03:55,892 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:55] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:03:55,986 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:55] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:03:55,988 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:55] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:03:55,990 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:55] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:03:55,992 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:55] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:03:55,994 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:55] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:03:56,197 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:56] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:03:56,289 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:56] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:03:56,291 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:56] code 404, message File not found
+2025-12-01 14:03:56,291 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:56] "GET /js/ui.js HTTP/1.1" 404 -
+2025-12-01 14:03:56,293 - INFO - 127.0.0.1 - - [01/Dec/2025 14:03:56] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:04:18,963 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:18] "GET / HTTP/1.1" 200 -
+2025-12-01 14:04:18,984 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:18] code 404, message File not found
+2025-12-01 14:04:18,985 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:18] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:04:19,214 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:04:19,297 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:04:19,298 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:04:19,300 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:04:19,302 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:04:19,306 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:04:19,522 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:04:19,605 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:04:19,606 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] code 404, message File not found
+2025-12-01 14:04:19,607 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] "GET /js/ui.js HTTP/1.1" 404 -
+2025-12-01 14:04:19,608 - INFO - 127.0.0.1 - - [01/Dec/2025 14:04:19] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:04:40,847 - INFO - 
+Server stopped
+2025-12-01 14:06:13,335 - INFO - Server running at http://localhost:8000
+2025-12-01 14:06:13,335 - INFO - Press Ctrl+C to stop
+2025-12-01 14:06:16,540 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:16] "GET / HTTP/1.1" 200 -
+2025-12-01 14:06:16,558 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:16] code 404, message File not found
+2025-12-01 14:06:16,558 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:16] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:06:16,743 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:16] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:06:16,877 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:16] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:06:16,878 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:16] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:06:16,880 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:16] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:06:16,881 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:16] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:06:16,883 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:16] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:06:17,046 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:17] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:06:17,195 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:17] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:06:17,197 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:17] "GET /js/ui.js HTTP/1.1" 200 -
+2025-12-01 14:06:17,198 - INFO - 127.0.0.1 - - [01/Dec/2025 14:06:17] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:08:41,469 - INFO - 127.0.0.1 - - [01/Dec/2025 14:08:41] "GET / HTTP/1.1" 200 -
+2025-12-01 14:09:35,579 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:35] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:09:35,585 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:35] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:09:35,891 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:35] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:09:35,893 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:35] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:09:35,895 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:35] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:09:35,898 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:35] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:09:35,901 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:35] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:09:35,904 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:35] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:09:36,209 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:36] "GET /js/ui.js HTTP/1.1" 200 -
+2025-12-01 14:09:36,211 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:36] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:09:36,212 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:36] code 404, message File not found
+2025-12-01 14:09:36,212 - INFO - 127.0.0.1 - - [01/Dec/2025 14:09:36] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:21:14,196 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET / HTTP/1.1" 200 -
+2025-12-01 14:21:14,256 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] code 404, message File not found
+2025-12-01 14:21:14,256 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:21:14,446 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:21:14,578 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:21:14,580 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:21:14,582 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:21:14,583 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:21:14,585 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:21:14,761 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:21:14,893 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:21:14,895 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /js/ui.js HTTP/1.1" 200 -
+2025-12-01 14:21:14,897 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:14] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:21:38,325 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET / HTTP/1.1" 200 -
+2025-12-01 14:21:38,358 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] code 404, message File not found
+2025-12-01 14:21:38,358 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:21:38,572 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:21:38,671 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:21:38,673 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:21:38,675 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:21:38,676 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:21:38,678 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:21:38,877 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:21:38,988 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:21:38,989 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /js/ui.js HTTP/1.1" 200 -
+2025-12-01 14:21:38,991 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:38] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:21:57,131 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET / HTTP/1.1" 200 -
+2025-12-01 14:21:57,156 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] code 404, message File not found
+2025-12-01 14:21:57,156 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:21:57,396 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:21:57,479 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:21:57,481 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:21:57,482 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:21:57,484 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:21:57,485 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:21:57,708 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:21:57,792 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:21:57,793 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /js/ui.js HTTP/1.1" 200 -
+2025-12-01 14:21:57,795 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:57] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:21:58,162 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:58] code 404, message File not found
+2025-12-01 14:21:58,162 - INFO - 127.0.0.1 - - [01/Dec/2025 14:21:58] "GET /favicon.ico HTTP/1.1" 404 -
+2025-12-01 14:23:28,586 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:28] "GET / HTTP/1.1" 200 -
+2025-12-01 14:23:28,614 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:28] code 404, message File not found
+2025-12-01 14:23:28,615 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:28] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:23:28,850 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:28] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:23:28,936 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:28] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:23:28,937 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:28] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:23:28,939 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:28] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:23:28,941 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:28] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:23:28,943 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:28] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:23:29,167 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:29] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:23:29,244 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:29] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:23:29,246 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:29] "GET /js/ui.js HTTP/1.1" 200 -
+2025-12-01 14:23:29,247 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:29] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:23:44,821 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:44] "GET / HTTP/1.1" 200 -
+2025-12-01 14:23:44,847 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:44] code 404, message File not found
+2025-12-01 14:23:44,848 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:44] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:23:45,074 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:45] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:23:45,157 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:45] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:23:45,159 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:45] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:23:45,161 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:45] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:23:45,162 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:45] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:23:45,163 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:45] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:23:45,383 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:45] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:23:45,474 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:45] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:23:45,476 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:45] "GET /js/ui.js HTTP/1.1" 200 -
+2025-12-01 14:23:45,478 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:45] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:23:55,828 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:55] "GET / HTTP/1.1" 200 -
+2025-12-01 14:23:55,856 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:55] code 404, message File not found
+2025-12-01 14:23:55,856 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:55] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:23:56,079 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:23:56,170 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:23:56,171 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:23:56,173 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:23:56,174 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:23:56,176 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:23:56,393 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:23:56,476 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:23:56,478 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /js/ui.js HTTP/1.1" 200 -
+2025-12-01 14:23:56,479 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:23:56,845 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] code 404, message File not found
+2025-12-01 14:23:56,845 - INFO - 127.0.0.1 - - [01/Dec/2025 14:23:56] "GET /favicon.ico HTTP/1.1" 404 -
+2025-12-01 14:24:59,454 - INFO - 127.0.0.1 - - [01/Dec/2025 14:24:59] "GET / HTTP/1.1" 200 -
+2025-12-01 14:24:59,480 - INFO - 127.0.0.1 - - [01/Dec/2025 14:24:59] code 404, message File not found
+2025-12-01 14:24:59,480 - INFO - 127.0.0.1 - - [01/Dec/2025 14:24:59] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 14:24:59,722 - INFO - 127.0.0.1 - - [01/Dec/2025 14:24:59] "GET /css/styles.css HTTP/1.1" 200 -
+2025-12-01 14:24:59,790 - INFO - 127.0.0.1 - - [01/Dec/2025 14:24:59] "GET /js/config.js HTTP/1.1" 200 -
+2025-12-01 14:24:59,791 - INFO - 127.0.0.1 - - [01/Dec/2025 14:24:59] "GET /js/delaunay.js HTTP/1.1" 200 -
+2025-12-01 14:24:59,793 - INFO - 127.0.0.1 - - [01/Dec/2025 14:24:59] "GET /js/imageAnalyzer.js HTTP/1.1" 200 -
+2025-12-01 14:24:59,794 - INFO - 127.0.0.1 - - [01/Dec/2025 14:24:59] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 14:24:59,796 - INFO - 127.0.0.1 - - [01/Dec/2025 14:24:59] "GET /js/meshBuilder.js HTTP/1.1" 200 -
+2025-12-01 14:25:00,039 - INFO - 127.0.0.1 - - [01/Dec/2025 14:25:00] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 14:25:00,103 - INFO - 127.0.0.1 - - [01/Dec/2025 14:25:00] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 14:25:00,105 - INFO - 127.0.0.1 - - [01/Dec/2025 14:25:00] "GET /js/ui.js HTTP/1.1" 200 -
+2025-12-01 14:25:00,107 - INFO - 127.0.0.1 - - [01/Dec/2025 14:25:00] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 14:25:42,102 - INFO - 
+Server stopped

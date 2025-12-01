@@ -1,39 +1,32 @@
-// Point generation and distribution for relief geometry
+// Point generation with better adaptive distribution
 
 class PointGenerator {
-  // Generate adaptively distributed points based on image features
   static generate(analyzer, cfg) {
     const points = [];
-    const { cellDensity, edgeSensitivity, jitter } = cfg;
+    const { cellDensity, edgeSensitivity, jitter, adaptiveSizing, minCellScale, maxCellScale } = cfg;
     
-    // Build edge map for adaptive density
-    analyzer.buildEdgeMap(Math.max(100, cellDensity * 2));
+    // Pre-compute edge map
+    analyzer.computeSobel();
     
     const baseStep = 1 / cellDensity;
-    const minDist = baseStep * 0.4; // Minimum distance between points
+    const minDist = baseStep * 0.35;
     
-    // Grid for spatial hashing (fast neighbor lookup)
-    const grid = new Map();
+    // Spatial hash grid for collision detection
     const gridSize = minDist;
+    const grid = new Map();
     
-    const getGridKey = (x, y) => {
-      const gx = Math.floor(x / gridSize);
-      const gy = Math.floor(y / gridSize);
-      return `${gx},${gy}`;
-    };
+    const getGridKey = (x, y) => `${Math.floor(x / gridSize)},${Math.floor(y / gridSize)}`;
     
     const canPlace = (x, y, minD) => {
       const gx = Math.floor(x / gridSize);
       const gy = Math.floor(y / gridSize);
       
-      // Check neighboring cells
-      for (let dx = -1; dx <= 1; dx++) {
-        for (let dy = -1; dy <= 1; dy++) {
-          const key = `${gx + dx},${gy + dy}`;
-          const cell = grid.get(key);
+      for (let dx = -2; dx <= 2; dx++) {
+        for (let dy = -2; dy <= 2; dy++) {
+          const cell = grid.get(`${gx + dx},${gy + dy}`);
           if (cell) {
             for (const p of cell) {
-              const dist = Math.sqrt((x - p.x) ** 2 + (y - p.y) ** 2);
+              const dist = Math.hypot(x - p.x, y - p.y);
               if (dist < minD) return false;
             }
           }
@@ -49,100 +42,86 @@ class PointGenerator {
       const point = { x, y, brightness, isEdge, isBoundary };
       grid.get(key).push(point);
       points.push(point);
+      return true;
     };
     
-    // First pass: Add boundary points for clean edges
-    const boundaryStep = baseStep * 0.5;
-    for (let t = 0; t <= 1; t += boundaryStep) {
-      // Top edge
-      addPoint(t, 0, analyzer.getBrightness(t, 0, cfg), false, true);
-      // Bottom edge  
-      addPoint(t, 1, analyzer.getBrightness(t, 1, cfg), false, true);
-      // Left edge
-      if (t > 0 && t < 1) {
-        addPoint(0, t, analyzer.getBrightness(0, t, cfg), false, true);
-        addPoint(1, t, analyzer.getBrightness(1, t, cfg), false, true);
-      }
-    }
+    // 1. Add boundary points (corners and edges)
+    const boundaryStep = baseStep * 0.4;
     
-    // Corners
+    // Corners first
     addPoint(0, 0, analyzer.getBrightness(0, 0, cfg), false, true);
     addPoint(1, 0, analyzer.getBrightness(1, 0, cfg), false, true);
     addPoint(0, 1, analyzer.getBrightness(0, 1, cfg), false, true);
     addPoint(1, 1, analyzer.getBrightness(1, 1, cfg), false, true);
     
-    // Second pass: Edge-aware point distribution
-    // More points in high-detail areas
-    for (let y = baseStep; y < 1; y += baseStep) {
-      for (let x = baseStep; x < 1; x += baseStep) {
-        const edge = analyzer.getEdgeStrengthFast(x, y);
+    // Edges
+    for (let t = boundaryStep; t < 1; t += boundaryStep) {
+      addPoint(t, 0, analyzer.getBrightness(t, 0, cfg), false, true);
+      addPoint(t, 1, analyzer.getBrightness(t, 1, cfg), false, true);
+      addPoint(0, t, analyzer.getBrightness(0, t, cfg), false, true);
+      addPoint(1, t, analyzer.getBrightness(1, t, cfg), false, true);
+    }
+    
+    // 2. Generate interior points
+    // Use a priority queue approach: place important points first
+    const candidates = [];
+    
+    // Sample the image to find point candidates
+    const sampleStep = baseStep * 0.5;
+    for (let y = sampleStep; y < 1 - sampleStep * 0.5; y += sampleStep) {
+      for (let x = sampleStep; x < 1 - sampleStep * 0.5; x += sampleStep) {
+        const edge = analyzer.getEdgeStrength(x, y);
         const brightness = analyzer.getBrightness(x, y, cfg);
+        const contrast = analyzer.getLocalContrast(x, y);
         
-        // Adaptive density based on edge strength
-        const localDensity = 1 + edge * edgeSensitivity * 2;
-        const localStep = baseStep / localDensity;
+        // Priority: edges first, then high contrast areas
+        const priority = edge * edgeSensitivity + contrast * 0.5;
         
-        // Add jitter
-        const jx = (Math.random() - 0.5) * localStep * jitter;
-        const jy = (Math.random() - 0.5) * localStep * jitter;
-        
-        const px = Math.max(0.01, Math.min(0.99, x + jx));
-        const py = Math.max(0.01, Math.min(0.99, y + jy));
-        
-        // Check minimum distance
-        const adaptiveMinDist = minDist / localDensity;
-        if (canPlace(px, py, adaptiveMinDist)) {
-          addPoint(px, py, analyzer.getBrightness(px, py, cfg), edge > 0.3);
-        }
-        
-        // Add extra points in high-edge areas
-        if (edge > 0.4 && localDensity > 1.5) {
-          const extraCount = Math.floor(localDensity - 1);
-          for (let e = 0; e < extraCount; e++) {
-            const ex = px + (Math.random() - 0.5) * localStep;
-            const ey = py + (Math.random() - 0.5) * localStep;
-            
-            if (ex > 0.01 && ex < 0.99 && ey > 0.01 && ey < 0.99) {
-              if (canPlace(ex, ey, adaptiveMinDist * 0.8)) {
-                addPoint(ex, ey, analyzer.getBrightness(ex, ey, cfg), true);
-              }
+        candidates.push({ x, y, brightness, edge, priority });
+      }
+    }
+    
+    // Sort by priority (high priority first)
+    candidates.sort((a, b) => b.priority - a.priority);
+    
+    // Place points from priority queue
+    for (const cand of candidates) {
+      // Calculate local cell size based on brightness (if adaptive)
+      let localMinDist = minDist;
+      if (adaptiveSizing) {
+        // Darker areas = smaller cells, brighter = larger
+        const sizeScale = minCellScale + (maxCellScale - minCellScale) * cand.brightness;
+        localMinDist = minDist * sizeScale;
+      }
+      
+      // Add jitter
+      const jx = (Math.random() - 0.5) * baseStep * jitter;
+      const jy = (Math.random() - 0.5) * baseStep * jitter;
+      
+      const px = Math.max(0.02, Math.min(0.98, cand.x + jx));
+      const py = Math.max(0.02, Math.min(0.98, cand.y + jy));
+      
+      if (canPlace(px, py, localMinDist)) {
+        addPoint(px, py, analyzer.getBrightness(px, py, cfg), cand.edge > 0.3);
+      }
+      
+      // For high-edge areas, try to add extra points
+      if (cand.edge > 0.4 && edgeSensitivity > 0.5) {
+        const extraDist = localMinDist * 0.7;
+        for (let i = 0; i < 2; i++) {
+          const ex = px + (Math.random() - 0.5) * baseStep;
+          const ey = py + (Math.random() - 0.5) * baseStep;
+          
+          if (ex > 0.02 && ex < 0.98 && ey > 0.02 && ey < 0.98) {
+            if (canPlace(ex, ey, extraDist)) {
+              addPoint(ex, ey, analyzer.getBrightness(ex, ey, cfg), true);
             }
           }
         }
       }
     }
     
-    console.log(`Generated ${points.length} points`);
-    return points;
-  }
-  
-  // Generate uniform grid points (simpler, faster)
-  static generateUniform(analyzer, cfg) {
-    const points = [];
-    const { cellDensity, jitter } = cfg;
-    const step = 1 / cellDensity;
-    
-    for (let y = 0; y <= 1; y += step) {
-      for (let x = 0; x <= 1; x += step) {
-        const isBoundary = x === 0 || x >= 1 - step/2 || y === 0 || y >= 1 - step/2;
-        
-        let px = x, py = y;
-        if (!isBoundary && jitter > 0) {
-          px += (Math.random() - 0.5) * step * jitter;
-          py += (Math.random() - 0.5) * step * jitter;
-          px = Math.max(0, Math.min(1, px));
-          py = Math.max(0, Math.min(1, py));
-        }
-        
-        points.push({
-          x: px,
-          y: py,
-          brightness: analyzer.getBrightness(px, py, cfg),
-          isBoundary
-        });
-      }
-    }
-    
+    console.log(`Generated ${points.length} points (${points.filter(p => p.isEdge).length} edge points)`);
     return points;
   }
 }
@@ -151,32 +130,41 @@ class PointGenerator {
 // Main geometry generator
 class GeometryGenerator {
   static generate(analyzer, cfg) {
-    console.log('Starting geometry generation...');
+    console.log('=== Starting geometry generation ===');
     const startTime = performance.now();
     
-    // Generate points
+    // Generate adaptive point distribution
     const points = PointGenerator.generate(analyzer, cfg);
     console.log(`Point generation: ${(performance.now() - startTime).toFixed(0)}ms`);
     
-    // Triangulate
+    // Triangulate using Delaunay
     const triStart = performance.now();
     const triangles = Delaunay.triangulate(points);
     console.log(`Triangulation: ${(performance.now() - triStart).toFixed(0)}ms, ${triangles.length} triangles`);
     
-    // Calculate per-triangle data
+    // Calculate per-triangle brightness (use center sampling for accuracy)
     for (const tri of triangles) {
       const [v0, v1, v2] = tri.vertices;
+      
+      // Triangle center
       tri.center = {
         x: (v0.x + v1.x + v2.x) / 3,
         y: (v0.y + v1.y + v2.y) / 3
       };
-      tri.brightness = (v0.brightness + v1.brightness + v2.brightness) / 3;
       
-      // Check if any vertex is a boundary point
+      // Sample brightness at center for more accurate representation
+      const centerBrightness = analyzer.getBrightness(tri.center.x, tri.center.y, cfg);
+      const vertexBrightness = (v0.brightness + v1.brightness + v2.brightness) / 3;
+      
+      // Blend center and vertex brightness
+      tri.brightness = centerBrightness * 0.6 + vertexBrightness * 0.4;
+      
+      // Check boundary
       tri.isBoundary = v0.isBoundary || v1.isBoundary || v2.isBoundary;
     }
     
-    console.log(`Total generation time: ${(performance.now() - startTime).toFixed(0)}ms`);
+    const totalTime = performance.now() - startTime;
+    console.log(`=== Generation complete: ${totalTime.toFixed(0)}ms ===`);
     
     return {
       points,
@@ -184,7 +172,7 @@ class GeometryGenerator {
       stats: {
         pointCount: points.length,
         triangleCount: triangles.length,
-        generationTime: performance.now() - startTime
+        generationTime: totalTime
       }
     };
   }

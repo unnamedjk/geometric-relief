@@ -1,24 +1,30 @@
 // Default configuration with all adjustable parameters
 const DEFAULT_CONFIG = {
   // === IMAGE SETTINGS ===
-  contrast: 1.5,           // 0.5 - 3.0: Adjust brightness curve
+  contrast: 2.0,           // 0.5 - 4.0: Higher = more dramatic light/dark separation
   brightness: 0,           // -1 to 1: Shift overall brightness
   invertBrightness: false, // Swap light/dark
+  gamma: 1.5,              // 0.5 - 3.0: Gamma curve adjustment
   
   // === GEOMETRY SETTINGS ===
-  cellDensity: 40,         // 10-100: Number of cells across width
-  edgeSensitivity: 1.0,    // 0-3: How much edges increase density
-  jitter: 0.5,             // 0-1: Randomness in point placement
+  cellDensity: 50,         // 10-100: Number of cells across width
+  edgeSensitivity: 2.0,    // 0-5: How much edges increase local detail
+  jitter: 0.4,             // 0-1: Randomness in point placement
+  adaptiveSizing: true,    // Vary cell size based on brightness
+  minCellScale: 0.3,       // Minimum cell size multiplier (for dark areas)
+  maxCellScale: 2.0,       // Maximum cell size multiplier (for bright areas)
   
   // === RELIEF SETTINGS ===
-  reliefMethod: 'angled',  // 'angled' or 'heightmap'
-  maxTiltAngle: 25,        // 5-45 degrees: Max surface tilt
+  reliefMethod: 'angled',  // 'angled', 'heightmap', or 'hybrid'
+  maxTiltAngle: 35,        // 5-60 degrees: Max surface tilt (INCREASED)
   baseThickness: 3,        // mm: Solid base thickness
-  maxReliefHeight: 8,      // mm: Additional height for depth effect
+  maxReliefHeight: 12,     // mm: Additional height for depth effect (INCREASED)
+  heightVariation: 0.4,    // 0-1: How much height varies with brightness
+  facetSharpness: 0.8,     // 0-1: How sharp the facet edges are
   
-  // === LIGHTING (for preview and angle calculation) ===
+  // === LIGHTING (for angle calculation) ===
   lightAzimuth: 45,        // 0-360: Horizontal angle (0=front, 90=right)
-  lightElevation: 60,      // 0-90: Vertical angle (0=horizon, 90=overhead)
+  lightElevation: 50,      // 0-90: Vertical angle (lower = more dramatic)
   
   // === OUTPUT DIMENSIONS ===
   outputWidthMM: 200,      // Total width in mm
@@ -33,10 +39,14 @@ const DEFAULT_CONFIG = {
   registrationPins: true,  // Add alignment features
   
   // === PREVIEW ===
-  previewColor: '#b0b0b0',
+  previewColor: '#c0c0c0',
   showWireframe: false,
   realisticLighting: true,
   autoRotate: false,
+  
+  // === ADVANCED ===
+  smoothNormals: false,    // Keep false for sharper facets
+  borderWidth: 2,          // mm: flat border around edge
 };
 
 // Configuration manager

@@ -1,324 +1,361 @@
-// Three.js viewer for 3D preview
-const ThreeViewer = {
-  scene: null,
-  camera: null,
-  renderer: null,
-  mesh: null,
-  controls: null,
-  container: null,
-  animationId: null,
-  
-  initialize: function(container, config) {
-    debugLog('=== Initializing Three.js viewer ===');
-    
-    if (!container) {
-      debugLog('ERROR: No container provided for Three.js', 'error');
-      return false;
-    }
-    
+// Three.js viewer with realistic lighting and view controls
+
+class ThreeViewer {
+  constructor(container) {
     this.container = container;
+    this.scene = null;
+    this.camera = null;
+    this.renderer = null;
+    this.mesh = null;
+    this.directionalLight = null;
+    this.animationId = null;
+    this.autoRotate = false;
     
-    try {
-      // Get container dimensions
-      const width = container.clientWidth || 600;
-      const height = container.clientHeight || 600;
-      
-      debugLog(`Container dimensions: ${width}x${height}`);
-      
-      // Create scene
-      this.scene = new THREE.Scene();
-      this.scene.background = new THREE.Color(0x1a1a1a);
-      
-      // Create camera
-      this.camera = new THREE.PerspectiveCamera(
-        45,
-        width / height,
-        0.1,
-        2000
-      );
-      this.camera.position.set(150, 150, 300);
-      this.camera.lookAt(0, 0, 0);
-      
-      // Create renderer
-      this.renderer = new THREE.WebGLRenderer({ 
-        antialias: true,
-        alpha: true 
-      });
-      this.renderer.setSize(width, height);
-      this.renderer.setPixelRatio(window.devicePixelRatio);
-      this.renderer.shadowMap.enabled = true;
-      this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-      
-      // Clear container and append renderer
-      container.innerHTML = '';
-      container.appendChild(this.renderer.domElement);
-      
-      // Add lights
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-      this.scene.add(ambientLight);
-      
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-      directionalLight.position.set(100, 200, 100);
-      directionalLight.castShadow = true;
-      directionalLight.shadow.camera.left = -200;
-      directionalLight.shadow.camera.right = 200;
-      directionalLight.shadow.camera.top = 200;
-      directionalLight.shadow.camera.bottom = -200;
-      directionalLight.shadow.mapSize.width = 2048;
-      directionalLight.shadow.mapSize.height = 2048;
-      this.scene.add(directionalLight);
-      
-      // Add grid helper
-      const gridHelper = new THREE.GridHelper(400, 20, 0x444444, 0x222222);
-      this.scene.add(gridHelper);
-      
-      // Simple orbit controls (manual implementation since OrbitControls not available on CDN)
-      this.setupControls();
-      
-      // Start animation
-      this.animate();
-      
-      // Handle resize
-      window.addEventListener('resize', () => this.handleResize());
-      
-      debugLog('Three.js viewer initialized successfully');
-      return true;
-      
-    } catch (error) {
-      debugLog(`ERROR initializing Three.js: ${error.message}`, 'error');
-      debugLog(`Stack: ${error.stack}`, 'error');
-      return false;
-    }
-  },
+    // Camera control state
+    this.controls = {
+      rotationX: 0.5,
+      rotationY: 0.4,
+      distance: 400,
+      target: new THREE.Vector3(0, 0, 0),
+      isDragging: false,
+      isPanning: false,
+      lastMouseX: 0,
+      lastMouseY: 0
+    };
+    
+    this.init();
+  }
   
-  setupControls: function() {
-    let mouseDown = false;
-    let mouseX = 0;
-    let mouseY = 0;
-    let rotationX = 0;
-    let rotationY = 0;
-    let distance = 300;
+  init() {
+    const width = this.container.clientWidth || 800;
+    const height = this.container.clientHeight || 600;
     
+    // Scene
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x1a1a1a);
+    
+    // Camera
+    this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 5000);
+    this.updateCameraPosition();
+    
+    // Renderer
+    this.renderer = new THREE.WebGLRenderer({ 
+      antialias: true,
+      alpha: true 
+    });
+    this.renderer.setSize(width, height);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    
+    this.container.appendChild(this.renderer.domElement);
+    
+    this.setupLighting();
+    this.setupGrid();
+    this.setupControls();
+    
+    window.addEventListener('resize', () => this.onResize());
+    
+    this.animate();
+  }
+  
+  setupLighting() {
+    // Ambient (low)
+    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.25);
+    this.scene.add(this.ambientLight);
+    
+    // Main directional light
+    this.directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    this.directionalLight.position.set(100, 150, 100);
+    this.directionalLight.castShadow = true;
+    this.directionalLight.shadow.mapSize.width = 2048;
+    this.directionalLight.shadow.mapSize.height = 2048;
+    this.directionalLight.shadow.camera.near = 10;
+    this.directionalLight.shadow.camera.far = 1000;
+    this.directionalLight.shadow.camera.left = -300;
+    this.directionalLight.shadow.camera.right = 300;
+    this.directionalLight.shadow.camera.top = 300;
+    this.directionalLight.shadow.camera.bottom = -300;
+    this.directionalLight.shadow.bias = -0.0005;
+    this.scene.add(this.directionalLight);
+    
+    // Fill light (opposite side, dimmer)
+    this.fillLight = new THREE.DirectionalLight(0xffffff, 0.2);
+    this.fillLight.position.set(-100, 50, -100);
+    this.scene.add(this.fillLight);
+  }
+  
+  setupGrid() {
+    // Ground plane for shadows
+    const groundGeo = new THREE.PlaneGeometry(1000, 1000);
+    const groundMat = new THREE.ShadowMaterial({ opacity: 0.4 });
+    this.groundPlane = new THREE.Mesh(groundGeo, groundMat);
+    this.groundPlane.rotation.x = -Math.PI / 2;
+    this.groundPlane.position.y = -1;
+    this.groundPlane.receiveShadow = true;
+    this.scene.add(this.groundPlane);
+    
+    // Grid
+    this.gridHelper = new THREE.GridHelper(500, 25, 0x444444, 0x2a2a2a);
+    this.gridHelper.position.y = -0.5;
+    this.scene.add(this.gridHelper);
+  }
+  
+  setupControls() {
     const canvas = this.renderer.domElement;
     
     canvas.addEventListener('mousedown', (e) => {
-      mouseDown = true;
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      if (e.shiftKey) {
+        this.controls.isPanning = true;
+      } else {
+        this.controls.isDragging = true;
+      }
+      this.controls.lastMouseX = e.clientX;
+      this.controls.lastMouseY = e.clientY;
     });
     
     canvas.addEventListener('mousemove', (e) => {
-      if (!mouseDown) return;
+      const dx = e.clientX - this.controls.lastMouseX;
+      const dy = e.clientY - this.controls.lastMouseY;
       
-      const deltaX = e.clientX - mouseX;
-      const deltaY = e.clientY - mouseY;
+      if (this.controls.isPanning) {
+        const panSpeed = this.controls.distance * 0.002;
+        // Pan in camera-relative directions
+        const right = new THREE.Vector3();
+        const up = new THREE.Vector3(0, 1, 0);
+        this.camera.getWorldDirection(right);
+        right.cross(up).normalize();
+        
+        this.controls.target.add(right.multiplyScalar(-dx * panSpeed));
+        this.controls.target.y += dy * panSpeed;
+        
+      } else if (this.controls.isDragging) {
+        this.controls.rotationY += dx * 0.005;
+        this.controls.rotationX += dy * 0.005;
+        this.controls.rotationX = Math.max(0.1, Math.min(Math.PI / 2 - 0.1, this.controls.rotationX));
+      }
       
-      rotationY += deltaX * 0.01;
-      rotationX += deltaY * 0.01;
+      this.controls.lastMouseX = e.clientX;
+      this.controls.lastMouseY = e.clientY;
       
-      // Clamp vertical rotation
-      rotationX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, rotationX));
-      
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      
-      this.updateCamera(rotationX, rotationY, distance);
+      if (this.controls.isDragging || this.controls.isPanning) {
+        this.updateCameraPosition();
+      }
     });
     
     canvas.addEventListener('mouseup', () => {
-      mouseDown = false;
+      this.controls.isDragging = false;
+      this.controls.isPanning = false;
     });
     
     canvas.addEventListener('mouseleave', () => {
-      mouseDown = false;
+      this.controls.isDragging = false;
+      this.controls.isPanning = false;
     });
     
     canvas.addEventListener('wheel', (e) => {
       e.preventDefault();
-      distance += e.deltaY * 0.5;
-      distance = Math.max(50, Math.min(1000, distance));
-      this.updateCamera(rotationX, rotationY, distance);
-    });
+      this.controls.distance *= 1 + e.deltaY * 0.001;
+      this.controls.distance = Math.max(20, Math.min(2000, this.controls.distance));
+      this.updateCameraPosition();
+    }, { passive: false });
     
-    // Touch controls for mobile
-    let touchStart = null;
+    // Touch support
+    let lastTouchDist = 0;
     
     canvas.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
-        touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        this.controls.isDragging = true;
+        this.controls.lastMouseX = e.touches[0].clientX;
+        this.controls.lastMouseY = e.touches[0].clientY;
+      } else if (e.touches.length === 2) {
+        lastTouchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
       }
     });
     
     canvas.addEventListener('touchmove', (e) => {
-      if (!touchStart || e.touches.length !== 1) return;
       e.preventDefault();
       
-      const deltaX = e.touches[0].clientX - touchStart.x;
-      const deltaY = e.touches[0].clientY - touchStart.y;
-      
-      rotationY += deltaX * 0.01;
-      rotationX += deltaY * 0.01;
-      rotationX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, rotationX));
-      
-      touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      
-      this.updateCamera(rotationX, rotationY, distance);
-    });
+      if (e.touches.length === 1 && this.controls.isDragging) {
+        const dx = e.touches[0].clientX - this.controls.lastMouseX;
+        const dy = e.touches[0].clientY - this.controls.lastMouseY;
+        
+        this.controls.rotationY += dx * 0.005;
+        this.controls.rotationX += dy * 0.005;
+        this.controls.rotationX = Math.max(0.1, Math.min(Math.PI / 2 - 0.1, this.controls.rotationX));
+        
+        this.controls.lastMouseX = e.touches[0].clientX;
+        this.controls.lastMouseY = e.touches[0].clientY;
+        this.updateCameraPosition();
+        
+      } else if (e.touches.length === 2) {
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        this.controls.distance *= lastTouchDist / dist;
+        this.controls.distance = Math.max(20, Math.min(2000, this.controls.distance));
+        lastTouchDist = dist;
+        this.updateCameraPosition();
+      }
+    }, { passive: false });
     
     canvas.addEventListener('touchend', () => {
-      touchStart = null;
+      this.controls.isDragging = false;
     });
-  },
+  }
   
-  updateCamera: function(rotX, rotY, dist) {
-    this.camera.position.x = dist * Math.sin(rotY) * Math.cos(rotX);
-    this.camera.position.y = dist * Math.sin(rotX);
-    this.camera.position.z = dist * Math.cos(rotY) * Math.cos(rotX);
-    this.camera.lookAt(0, 0, 0);
-  },
-  
-  updateMesh: function(geometry, config) {
-    debugLog('=== Updating Three.js mesh ===');
+  updateCameraPosition() {
+    const { rotationX, rotationY, distance, target } = this.controls;
     
-    if (!this.scene) {
-      debugLog('ERROR: Scene not initialized', 'error');
-      return false;
+    this.camera.position.x = target.x + distance * Math.sin(rotationY) * Math.cos(rotationX);
+    this.camera.position.z = target.z + distance * Math.cos(rotationY) * Math.cos(rotationX);
+    this.camera.position.y = target.y + distance * Math.sin(rotationX);
+    
+    this.camera.lookAt(target);
+  }
+  
+  updateLightPosition(azimuth, elevation) {
+    const az = azimuth * Math.PI / 180;
+    const el = elevation * Math.PI / 180;
+    
+    const dist = 300;
+    this.directionalLight.position.set(
+      dist * Math.cos(el) * Math.sin(az),
+      dist * Math.sin(el),
+      dist * Math.cos(el) * Math.cos(az)
+    );
+  }
+  
+  updateMesh(meshData, cfg) {
+    // Remove old mesh
+    if (this.mesh) {
+      this.scene.remove(this.mesh);
+      this.mesh.geometry.dispose();
+      this.mesh.material.dispose();
     }
     
-    if (!geometry || !geometry.vertices || !geometry.indices) {
-      debugLog('ERROR: Invalid geometry data', 'error');
-      return false;
-    }
+    // Create geometry
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(meshData.vertices, 3));
+    geometry.setIndex(new THREE.BufferAttribute(meshData.indices, 1));
+    geometry.computeVertexNormals();
     
-    try {
-      // Remove old mesh
-      if (this.mesh) {
-        this.scene.remove(this.mesh);
-        if (this.mesh.geometry) this.mesh.geometry.dispose();
-        if (this.mesh.material) this.mesh.material.dispose();
-        this.mesh = null;
-      }
-      
-      debugLog(`Creating geometry with ${geometry.vertices.length / 3} vertices`);
-      
-      // Create BufferGeometry
-      const bufferGeometry = new THREE.BufferGeometry();
-      
-      // Set vertices
-      bufferGeometry.setAttribute(
-        'position',
-        new THREE.BufferAttribute(geometry.vertices, 3)
-      );
-      
-      // Set indices
-      bufferGeometry.setIndex(
-        new THREE.BufferAttribute(geometry.indices, 1)
-      );
-      
-      // Compute normals for lighting
-      bufferGeometry.computeVertexNormals();
-      
-      // Center geometry
-      bufferGeometry.center();
-      
-      // Create material
-      const material = new THREE.MeshPhongMaterial({
-        color: config.previewColor || 0xcccccc,
-        side: THREE.DoubleSide,
-        flatShading: false,
-        shininess: 30,
-        specular: 0x111111
-      });
-      
-      // Create mesh
-      this.mesh = new THREE.Mesh(bufferGeometry, material);
-      this.mesh.castShadow = true;
-      this.mesh.receiveShadow = true;
-      
-      // Add to scene
-      this.scene.add(this.mesh);
-      
-      // Adjust camera to fit
-      this.fitCameraToObject();
-      
-      debugLog('Mesh updated successfully');
-      return true;
-      
-    } catch (error) {
-      debugLog(`ERROR updating mesh: ${error.message}`, 'error');
-      return false;
-    }
-  },
+    // Material - flat shading to show facets
+    const color = new THREE.Color(cfg.previewColor || '#c0c0c0');
+    const material = new THREE.MeshStandardMaterial({
+      color: color,
+      metalness: 0.05,
+      roughness: 0.75,
+      flatShading: true,
+      side: THREE.DoubleSide
+    });
+    
+    this.mesh = new THREE.Mesh(geometry, material);
+    this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
+    
+    // Center geometry
+    geometry.computeBoundingBox();
+    const box = geometry.boundingBox;
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+    this.mesh.position.set(-center.x, -box.min.z, -center.y);
+    
+    this.scene.add(this.mesh);
+    
+    this.fitToObject();
+    this.updateLightPosition(cfg.lightAzimuth, cfg.lightElevation);
+    
+    return true;
+  }
   
-  fitCameraToObject: function() {
+  fitToObject() {
     if (!this.mesh) return;
     
-    // Calculate bounding box
     const box = new THREE.Box3().setFromObject(this.mesh);
     const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
-    
     const maxDim = Math.max(size.x, size.y, size.z);
-    const fov = this.camera.fov * (Math.PI / 180);
-    let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
     
-    cameraZ *= 1.5; // Zoom out a bit
+    this.controls.distance = maxDim * 1.8;
+    this.controls.target.set(0, size.z / 2, 0);
     
-    this.camera.position.set(cameraZ, cameraZ * 0.5, cameraZ);
-    this.camera.lookAt(center);
-  },
+    this.updateCameraPosition();
+  }
   
-  animate: function() {
-    if (!this.renderer || !this.scene || !this.camera) return;
-    
+  resetView() {
+    this.controls.rotationX = 0.5;
+    this.controls.rotationY = 0.4;
+    this.controls.target.set(0, 0, 0);
+    this.fitToObject();
+  }
+  
+  setView(view) {
+    switch (view) {
+      case 'front':
+        this.controls.rotationX = 0.3;
+        this.controls.rotationY = 0;
+        break;
+      case 'top':
+        this.controls.rotationX = Math.PI / 2 - 0.01;
+        this.controls.rotationY = 0;
+        break;
+    }
+    this.updateCameraPosition();
+  }
+  
+  setWireframe(enabled) {
+    if (this.mesh && this.mesh.material) {
+      this.mesh.material.wireframe = enabled;
+    }
+  }
+  
+  setAutoRotate(enabled) {
+    this.autoRotate = enabled;
+  }
+  
+  setPreviewColor(color) {
+    if (this.mesh && this.mesh.material) {
+      this.mesh.material.color.set(color);
+    }
+  }
+  
+  animate() {
     this.animationId = requestAnimationFrame(() => this.animate());
     
-    // Slow rotation if mesh exists
-    if (this.mesh) {
-      this.mesh.rotation.y += 0.002;
+    if (this.autoRotate) {
+      this.controls.rotationY += 0.003;
+      this.updateCameraPosition();
     }
     
     this.renderer.render(this.scene, this.camera);
-  },
+  }
   
-  handleResize: function() {
-    if (!this.container || !this.camera || !this.renderer) return;
-    
+  onResize() {
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
     
-    this.camera.aspect = width / height;
-    this.camera.updateProjectionMatrix();
-    
-    this.renderer.setSize(width, height);
-  },
+    if (width && height) {
+      this.camera.aspect = width / height;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(width, height);
+    }
+  }
   
-  dispose: function() {
-    debugLog('Disposing Three.js viewer');
-    
+  dispose() {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
-      this.animationId = null;
     }
     
     if (this.mesh) {
       this.scene.remove(this.mesh);
-      if (this.mesh.geometry) this.mesh.geometry.dispose();
-      if (this.mesh.material) this.mesh.material.dispose();
-      this.mesh = null;
+      this.mesh.geometry.dispose();
+      this.mesh.material.dispose();
     }
     
-    if (this.renderer) {
-      this.renderer.dispose();
-      this.renderer = null;
-    }
-    
-    this.scene = null;
-    this.camera = null;
-    this.container = null;
-    
-    window.removeEventListener('resize', this.handleResize);
+    this.renderer.dispose();
   }
-};
-
-debugLog('ThreeViewer loaded');
+}
