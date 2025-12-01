@@ -84,3 +84,25 @@
 2025-12-01 13:40:33,054 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:33] "GET /favicon.ico HTTP/1.1" 404 -
 2025-12-01 13:41:27,652 - INFO - 
 Server stopped
+2025-12-01 13:48:00,296 - INFO - Server running at http://localhost:8000
+2025-12-01 13:48:00,296 - INFO - Press Ctrl+C to stop
+2025-12-01 13:48:02,621 - INFO - 127.0.0.1 - - [01/Dec/2025 13:48:02] "GET / HTTP/1.1" 200 -
+2025-12-01 13:48:02,658 - INFO - 127.0.0.1 - - [01/Dec/2025 13:48:02] code 404, message File not found
+2025-12-01 13:48:02,658 - INFO - 127.0.0.1 - - [01/Dec/2025 13:48:02] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 13:48:03,142 - INFO - 127.0.0.1 - - [01/Dec/2025 13:48:03] "GET /js/icons.js HTTP/1.1" 200 -
+2025-12-01 13:48:03,448 - INFO - 127.0.0.1 - - [01/Dec/2025 13:48:03] "GET /js/imageProcessing.js HTTP/1.1" 200 -
+2025-12-01 13:48:03,450 - INFO - 127.0.0.1 - - [01/Dec/2025 13:48:03] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 13:48:03,451 - INFO - 127.0.0.1 - - [01/Dec/2025 13:48:03] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 13:48:03,452 - INFO - 127.0.0.1 - - [01/Dec/2025 13:48:03] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 13:48:03,454 - INFO - 127.0.0.1 - - [01/Dec/2025 13:48:03] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 13:49:22,313 - INFO - 127.0.0.1 - - [01/Dec/2025 13:49:22] "GET / HTTP/1.1" 200 -
+2025-12-01 13:49:22,357 - INFO - 127.0.0.1 - - [01/Dec/2025 13:49:22] code 404, message File not found
+2025-12-01 13:49:22,357 - INFO - 127.0.0.1 - - [01/Dec/2025 13:49:22] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 13:49:22,728 - INFO - 127.0.0.1 - - [01/Dec/2025 13:49:22] "GET /js/icons.js HTTP/1.1" 200 -
+2025-12-01 13:49:23,031 - INFO - 127.0.0.1 - - [01/Dec/2025 13:49:23] "GET /js/imageProcessing.js HTTP/1.1" 200 -
+2025-12-01 13:49:23,033 - INFO - 127.0.0.1 - - [01/Dec/2025 13:49:23] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 13:49:23,034 - INFO - 127.0.0.1 - - [01/Dec/2025 13:49:23] "GET /js/threeViewer.js HTTP/1.1" 200 -
+2025-12-01 13:49:23,036 - INFO - 127.0.0.1 - - [01/Dec/2025 13:49:23] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 13:49:23,037 - INFO - 127.0.0.1 - - [01/Dec/2025 13:49:23] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 13:49:47,237 - INFO - 
+Server stopped
