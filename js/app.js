@@ -1,5 +1,31 @@
 // Main React application component
 const { useState, useRef, useEffect } = React;
+// Add this right after the useRef declarations in app.js
+useEffect(() => {
+  debugLog('Checking if Three.js container is ready...');
+  
+  if (!threeContainerRef.current) {
+    debugLog('Container not ready yet', 'warn');
+    return;
+  }
+  
+  if (viewerInitialized.current) {
+    debugLog('Viewer already initialized', 'info');
+    return;
+  }
+  
+  debugLog('Initializing Three.js viewer (useEffect)...');
+  const success = ThreeViewer.initialize(threeContainerRef.current, config);
+  
+  if (success) {
+    viewerInitialized.current = true;
+  }
+  
+  return () => {
+    ThreeViewer.dispose();
+    viewerInitialized.current = false;
+  };
+}, [threeContainerRef.current]);
 
 const GeometricImageTo3D = () => {
   debugLog('=== GeometricImageTo3D component initializing ===');
@@ -114,35 +140,22 @@ const GeometricImageTo3D = () => {
     }
   };
 
-  // Initialize Three.js viewer - wait for container to exist
+  // Initialize Three.js viewer
   useEffect(() => {
-    debugLog('Three.js initialization useEffect triggered');
+    if (!threeContainerRef.current || viewerInitialized.current) return;
     
-    if (!threeContainerRef.current) {
-      debugLog('Container ref not ready yet', 'warn');
-      return;
-    }
-    
-    if (viewerInitialized.current) {
-      debugLog('Viewer already initialized', 'info');
-      return;
-    }
-    
-    debugLog('Initializing Three.js viewer...');
+    debugLog('Initializing Three.js viewer (useEffect)...');
     const success = ThreeViewer.initialize(threeContainerRef.current, config);
     
     if (success) {
       viewerInitialized.current = true;
-      debugLog('Three.js viewer initialized successfully!');
-    } else {
-      debugLog('Three.js viewer initialization failed', 'error');
     }
     
     return () => {
       ThreeViewer.dispose();
       viewerInitialized.current = false;
     };
-  }, [image]); // Trigger when image changes to ensure container exists
+  }, []);
 
   // Generate geometry when image or config changes
   useEffect(() => {
@@ -167,10 +180,7 @@ const GeometricImageTo3D = () => {
         });
         
         if (viewerInitialized.current) {
-          debugLog('Updating Three.js mesh...');
           ThreeViewer.updateMesh(geom, config);
-        } else {
-          debugLog('Viewer not initialized yet, skipping mesh update', 'warn');
         }
       } else {
         debugLog('Geometry generation returned null', 'error');
@@ -187,6 +197,7 @@ const GeometricImageTo3D = () => {
   const drawPreview = () => {
     const canvas = previewCanvasRef.current;
     if (!canvas || !image) {
+      debugLog('Cannot draw preview: canvas or image missing', 'warn');
       return;
     }
     
