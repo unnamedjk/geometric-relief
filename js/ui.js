@@ -9,9 +9,9 @@ class UI {
     this.progress = document.getElementById('progress');
     
     this.onImageLoad = null;
-    this.onGenerate = null;  // Changed from onConfigChange
+    this.onGenerate = null;
     this.onExport = null;
-    this.onPreviewUpdate = null;  // For preview-only updates
+    this.onPreviewUpdate = null;
   }
   
   build() {
@@ -52,8 +52,8 @@ class UI {
   togglePanel(id) {
     const content = document.getElementById(`content-${id}`);
     const toggle = document.getElementById(`toggle-${id}`);
-    content.classList.toggle('collapsed');
-    toggle.classList.toggle('collapsed');
+    if (content) content.classList.toggle('collapsed');
+    if (toggle) toggle.classList.toggle('collapsed');
   }
   
   buildImageSection() {
@@ -165,7 +165,6 @@ class UI {
       
       <div class="divider"></div>
       
-      <!-- MAIN GENERATE BUTTON -->
       <button class="btn btn-primary" id="btn-generate" style="font-size: 16px; padding: 14px;" disabled>
         🔄 Generate Geometry
       </button>
@@ -246,7 +245,7 @@ class UI {
         </button>
       </div>
       
-      <div id="tile-export-section" style="display: none">
+      <div id="tile-export-section" style="display: ${config.get('enableTiling') ? 'block' : 'none'}">
         <div class="divider"></div>
         <button class="btn btn-primary" id="btn-export-all-tiles" disabled>
           Export All Tiles
@@ -276,38 +275,50 @@ class UI {
     `;
   }
   
+  // Helper to safely add event listener
+  addListener(id, event, handler) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener(event, handler);
+    } else {
+      console.warn(`Element not found: ${id}`);
+    }
+  }
+  
   attachEventListeners() {
     // File input
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
     
-    dropZone.addEventListener('click', () => fileInput.click());
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('drag-over');
-    });
-    dropZone.addEventListener('dragleave', () => {
-      dropZone.classList.remove('drag-over');
-    });
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('drag-over');
-      if (e.dataTransfer.files.length) {
-        this.handleFile(e.dataTransfer.files[0]);
-      }
-    });
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length) {
-        this.handleFile(e.target.files[0]);
-      }
-    });
+    if (dropZone && fileInput) {
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+      });
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+      });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        if (e.dataTransfer.files.length) {
+          this.handleFile(e.dataTransfer.files[0]);
+        }
+      });
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+          this.handleFile(e.target.files[0]);
+        }
+      });
+    }
     
-    // GENERATE BUTTON
-    document.getElementById('btn-generate').addEventListener('click', () => {
+    // Generate button
+    this.addListener('btn-generate', 'click', () => {
       if (this.onGenerate) this.onGenerate();
     });
     
-    // Sliders - just update config, no auto-regenerate
+    // Sliders
     const sliders = ['contrast', 'brightness', 'gamma', 'cellDensity', 'edgeSensitivity', 'jitter', 
                      'maxTiltAngle', 'baseThickness', 'maxReliefHeight', 
                      'lightAzimuth', 'lightElevation', 'tileOverlap', 'facetSharpness', 'heightVariation'];
@@ -318,8 +329,9 @@ class UI {
         el.addEventListener('input', (e) => {
           const val = parseFloat(e.target.value);
           const unit = id.includes('Angle') || id.includes('Azimuth') || id.includes('Elevation') ? '°' : 
-                       id.includes('MM') || id.includes('Thickness') || id.includes('Height') || id.includes('Overlap') ? 'mm' : '';
-          document.getElementById(`value-${id}`).textContent = val + unit;
+                       id.includes('Thickness') || id.includes('Height') || id.includes('Overlap') ? 'mm' : '';
+          const valueEl = document.getElementById(`value-${id}`);
+          if (valueEl) valueEl.textContent = val + unit;
           config.set(id, val);
           
           // Only update preview for lighting changes
@@ -340,8 +352,10 @@ class UI {
           config.set(id, e.target.checked);
           
           if (id === 'enableTiling') {
-            document.getElementById('tiling-options').style.display = e.target.checked ? 'block' : 'none';
-            document.getElementById('tile-export-section').style.display = e.target.checked ? 'block' : 'none';
+            const tilingOpts = document.getElementById('tiling-options');
+            const tileExport = document.getElementById('tile-export-section');
+            if (tilingOpts) tilingOpts.style.display = e.target.checked ? 'block' : 'none';
+            if (tileExport) tileExport.style.display = e.target.checked ? 'block' : 'none';
             this.updateTileGrid();
           }
           
@@ -355,8 +369,8 @@ class UI {
       }
     });
     
-    // Selects
-    document.getElementById('reliefMethod').addEventListener('change', (e) => {
+    // Select
+    this.addListener('reliefMethod', 'change', (e) => {
       config.set('reliefMethod', e.target.value);
     });
     
@@ -372,39 +386,39 @@ class UI {
     });
     
     // Color
-    document.getElementById('previewColor').addEventListener('change', (e) => {
+    this.addListener('previewColor', 'change', (e) => {
       config.set('previewColor', e.target.value);
       if (this.onPreviewUpdate) this.onPreviewUpdate('color', e.target.value);
     });
     
     // Export buttons
-    document.getElementById('btn-export-stl').addEventListener('click', () => {
+    this.addListener('btn-export-stl', 'click', () => {
       if (this.onExport) this.onExport('stl');
     });
-    document.getElementById('btn-export-obj').addEventListener('click', () => {
+    this.addListener('btn-export-obj', 'click', () => {
       if (this.onExport) this.onExport('obj');
     });
-    document.getElementById('btn-export-scad').addEventListener('click', () => {
+    this.addListener('btn-export-scad', 'click', () => {
       if (this.onExport) this.onExport('scad');
     });
-    document.getElementById('btn-export-config').addEventListener('click', () => {
+    this.addListener('btn-export-config', 'click', () => {
       if (this.onExport) this.onExport('config');
     });
-    document.getElementById('btn-export-all-tiles').addEventListener('click', () => {
+    this.addListener('btn-export-all-tiles', 'click', () => {
       if (this.onExport) this.onExport('tiles');
     });
     
     // Toolbar buttons
-    document.getElementById('btn-reset-view').addEventListener('click', () => {
+    this.addListener('btn-reset-view', 'click', () => {
       if (this.onPreviewUpdate) this.onPreviewUpdate('resetView');
     });
-    document.getElementById('btn-fit').addEventListener('click', () => {
+    this.addListener('btn-fit', 'click', () => {
       if (this.onPreviewUpdate) this.onPreviewUpdate('fit');
     });
-    document.getElementById('btn-front').addEventListener('click', () => {
+    this.addListener('btn-front', 'click', () => {
       if (this.onPreviewUpdate) this.onPreviewUpdate('viewFront');
     });
-    document.getElementById('btn-top').addEventListener('click', () => {
+    this.addListener('btn-top', 'click', () => {
       if (this.onPreviewUpdate) this.onPreviewUpdate('viewTop');
     });
   }
@@ -421,19 +435,23 @@ class UI {
       img.onload = () => {
         // Update preview
         const thumb = document.getElementById('preview-thumb');
-        thumb.src = e.target.result;
-        thumb.style.display = 'block';
+        if (thumb) {
+          thumb.src = e.target.result;
+          thumb.style.display = 'block';
+        }
         
         // Update dimensions if aspect ratio locked
         if (config.get('maintainAspectRatio')) {
           const aspect = img.width / img.height;
           const width = config.get('outputWidthMM');
           config.set('outputHeightMM', Math.round(width / aspect));
-          document.getElementById('outputHeightMM').value = config.get('outputHeightMM');
+          const heightInput = document.getElementById('outputHeightMM');
+          if (heightInput) heightInput.value = config.get('outputHeightMM');
         }
         
         // Enable generate button
-        document.getElementById('btn-generate').disabled = false;
+        const genBtn = document.getElementById('btn-generate');
+        if (genBtn) genBtn.disabled = false;
         
         if (this.onImageLoad) {
           this.onImageLoad(img);
@@ -457,45 +475,54 @@ class UI {
   }
   
   updateLightInfo() {
-    this.lightInfo.innerHTML = `
-      <div>Light: ${config.get('lightAzimuth')}° az, ${config.get('lightElevation')}° el</div>
-      <div>Drag to rotate • Scroll to zoom • Shift+drag to pan</div>
-    `;
+    if (this.lightInfo) {
+      this.lightInfo.innerHTML = `
+        <div>Light: ${config.get('lightAzimuth')}° az, ${config.get('lightElevation')}° el</div>
+        <div>Drag to rotate • Scroll to zoom • Shift+drag to pan</div>
+      `;
+    }
   }
   
   updateStatusBar(stats) {
-    this.statusBar.innerHTML = `
-      <span>Triangles: ${stats.triangles?.toLocaleString() || '-'}</span>
-      <span>Size: ${config.get('outputWidthMM')}×${config.get('outputHeightMM')}mm</span>
-      <span>Gen: ${stats.generationTime ? stats.generationTime.toFixed(0) + 'ms' : '-'}</span>
-    `;
+    if (this.statusBar) {
+      this.statusBar.innerHTML = `
+        <span>Triangles: ${stats.triangles?.toLocaleString() || '-'}</span>
+        <span>Size: ${config.get('outputWidthMM')}×${config.get('outputHeightMM')}mm</span>
+        <span>Gen: ${stats.generationTime ? stats.generationTime.toFixed(0) + 'ms' : '-'}</span>
+      `;
+    }
   }
   
   updateStats(stats) {
-    document.getElementById('stat-triangles').textContent = stats.triangles?.toLocaleString() || '-';
-    document.getElementById('stat-dimensions').textContent = 
-      `${config.get('outputWidthMM')}×${config.get('outputHeightMM')}×${(config.get('baseThickness') + config.get('maxReliefHeight')).toFixed(1)}mm`;
-    document.getElementById('stat-generation').textContent = stats.generationTime ? stats.generationTime.toFixed(0) + 'ms' : '-';
+    const triEl = document.getElementById('stat-triangles');
+    const dimEl = document.getElementById('stat-dimensions');
+    const genEl = document.getElementById('stat-generation');
+    
+    if (triEl) triEl.textContent = stats.triangles?.toLocaleString() || '-';
+    if (dimEl) dimEl.textContent = `${config.get('outputWidthMM')}×${config.get('outputHeightMM')}×${(config.get('baseThickness') + config.get('maxReliefHeight')).toFixed(1)}mm`;
+    if (genEl) genEl.textContent = stats.generationTime ? stats.generationTime.toFixed(0) + 'ms' : '-';
     
     this.updateStatusBar(stats);
     this.updateLightInfo();
   }
   
   enableExport(enabled) {
-    document.getElementById('btn-export-stl').disabled = !enabled;
-    document.getElementById('btn-export-obj').disabled = !enabled;
-    document.getElementById('btn-export-scad').disabled = !enabled;
-    document.getElementById('btn-export-config').disabled = !enabled;
-    document.getElementById('btn-export-all-tiles').disabled = !enabled;
+    ['btn-export-stl', 'btn-export-obj', 'btn-export-scad', 'btn-export-config', 'btn-export-all-tiles'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = !enabled;
+    });
   }
   
   showProgress(show, message = 'Generating geometry...') {
-    this.progress.textContent = message;
-    this.progress.classList.toggle('show', show);
+    if (this.progress) {
+      this.progress.textContent = message;
+      this.progress.classList.toggle('show', show);
+    }
   }
   
   setGenerateEnabled(enabled) {
-    document.getElementById('btn-generate').disabled = !enabled;
+    const btn = document.getElementById('btn-generate');
+    if (btn) btn.disabled = !enabled;
   }
 }
 
