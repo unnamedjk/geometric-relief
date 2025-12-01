@@ -1,0 +1,86 @@
+2025-12-01 13:29:38,852 - INFO - Server running at http://localhost:8000
+2025-12-01 13:29:38,853 - INFO - Press Ctrl+C to stop
+2025-12-01 13:29:49,856 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:49] "GET / HTTP/1.1" 200 -
+2025-12-01 13:29:50,581 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] code 404, message File not found
+2025-12-01 13:29:50,581 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] "GET /js/icons.js HTTP/1.1" 404 -
+2025-12-01 13:29:50,582 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] code 404, message File not found
+2025-12-01 13:29:50,583 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] "GET /js/imageProcessing.js HTTP/1.1" 404 -
+2025-12-01 13:29:50,886 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] code 404, message File not found
+2025-12-01 13:29:50,887 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] "GET /js/geometryGenerator.js HTTP/1.1" 404 -
+2025-12-01 13:29:50,888 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] code 404, message File not found
+2025-12-01 13:29:50,888 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] "GET /js/threeViewer.js HTTP/1.1" 404 -
+2025-12-01 13:29:50,889 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] code 404, message File not found
+2025-12-01 13:29:50,889 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] "GET /js/exporters.js HTTP/1.1" 404 -
+2025-12-01 13:29:50,889 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] code 404, message File not found
+2025-12-01 13:29:50,890 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] "GET /js/app.js HTTP/1.1" 404 -
+2025-12-01 13:29:50,890 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] code 404, message File not found
+2025-12-01 13:29:50,890 - INFO - 127.0.0.1 - - [01/Dec/2025 13:29:50] "GET /favicon.ico HTTP/1.1" 404 -
+2025-12-01 13:30:37,153 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] "GET / HTTP/1.1" 200 -
+2025-12-01 13:30:37,345 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] code 404, message File not found
+2025-12-01 13:30:37,345 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] "GET /js/icons.js HTTP/1.1" 404 -
+2025-12-01 13:30:37,408 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] code 404, message File not found
+2025-12-01 13:30:37,408 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] "GET /js/imageProcessing.js HTTP/1.1" 404 -
+2025-12-01 13:30:37,653 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] code 404, message File not found
+2025-12-01 13:30:37,654 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] "GET /js/geometryGenerator.js HTTP/1.1" 404 -
+2025-12-01 13:30:37,654 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] code 404, message File not found
+2025-12-01 13:30:37,654 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] "GET /js/threeViewer.js HTTP/1.1" 404 -
+2025-12-01 13:30:37,655 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] code 404, message File not found
+2025-12-01 13:30:37,655 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] "GET /js/exporters.js HTTP/1.1" 404 -
+2025-12-01 13:30:37,656 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] code 404, message File not found
+2025-12-01 13:30:37,656 - INFO - 127.0.0.1 - - [01/Dec/2025 13:30:37] "GET /js/app.js HTTP/1.1" 404 -
+2025-12-01 13:31:45,180 - INFO - 127.0.0.1 - - [01/Dec/2025 13:31:45] "GET / HTTP/1.1" 200 -
+2025-12-01 13:31:45,640 - INFO - 127.0.0.1 - - [01/Dec/2025 13:31:45] "GET /js/icons.js HTTP/1.1" 200 -
+2025-12-01 13:31:45,641 - INFO - 127.0.0.1 - - [01/Dec/2025 13:31:45] "GET /js/imageProcessing.js HTTP/1.1" 200 -
+2025-12-01 13:31:45,947 - INFO - 127.0.0.1 - - [01/Dec/2025 13:31:45] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 13:31:45,948 - INFO - 127.0.0.1 - - [01/Dec/2025 13:31:45] code 404, message File not found
+2025-12-01 13:31:45,948 - INFO - 127.0.0.1 - - [01/Dec/2025 13:31:45] "GET /js/threeViewer.js HTTP/1.1" 404 -
+2025-12-01 13:31:45,949 - INFO - 127.0.0.1 - - [01/Dec/2025 13:31:45] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 13:31:45,951 - INFO - 127.0.0.1 - - [01/Dec/2025 13:31:45] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 13:37:20,349 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:20] code 404, message File not found
+2025-12-01 13:37:20,350 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:20] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 13:37:21,828 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:21] "GET / HTTP/1.1" 200 -
+2025-12-01 13:37:22,013 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] code 404, message File not found
+2025-12-01 13:37:22,013 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 13:37:22,685 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] "GET /js/icons.js HTTP/1.1" 200 -
+2025-12-01 13:37:22,687 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] "GET /js/imageProcessing.js HTTP/1.1" 200 -
+2025-12-01 13:37:22,688 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 13:37:22,689 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] code 404, message File not found
+2025-12-01 13:37:22,690 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] "GET /js/threeViewer.js HTTP/1.1" 404 -
+2025-12-01 13:37:22,691 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 13:37:22,692 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 13:37:22,992 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] code 404, message File not found
+2025-12-01 13:37:22,992 - INFO - 127.0.0.1 - - [01/Dec/2025 13:37:22] "GET /favicon.ico HTTP/1.1" 404 -
+2025-12-01 13:39:06,363 - INFO - 127.0.0.1 - - [01/Dec/2025 13:39:06] "GET / HTTP/1.1" 200 -
+2025-12-01 13:39:06,388 - INFO - 127.0.0.1 - - [01/Dec/2025 13:39:06] code 404, message File not found
+2025-12-01 13:39:06,388 - INFO - 127.0.0.1 - - [01/Dec/2025 13:39:06] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 13:39:06,843 - INFO - 127.0.0.1 - - [01/Dec/2025 13:39:06] "GET /js/icons.js HTTP/1.1" 200 -
+2025-12-01 13:39:07,146 - INFO - 127.0.0.1 - - [01/Dec/2025 13:39:07] "GET /js/imageProcessing.js HTTP/1.1" 200 -
+2025-12-01 13:39:07,148 - INFO - 127.0.0.1 - - [01/Dec/2025 13:39:07] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 13:39:07,149 - INFO - 127.0.0.1 - - [01/Dec/2025 13:39:07] code 404, message File not found
+2025-12-01 13:39:07,149 - INFO - 127.0.0.1 - - [01/Dec/2025 13:39:07] "GET /js/threeViewer.js HTTP/1.1" 404 -
+2025-12-01 13:39:07,150 - INFO - 127.0.0.1 - - [01/Dec/2025 13:39:07] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 13:39:07,152 - INFO - 127.0.0.1 - - [01/Dec/2025 13:39:07] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 13:40:27,061 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:27] "GET / HTTP/1.1" 200 -
+2025-12-01 13:40:27,087 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:27] code 404, message File not found
+2025-12-01 13:40:27,088 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:27] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 13:40:27,603 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:27] "GET /js/icons.js HTTP/1.1" 200 -
+2025-12-01 13:40:27,910 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:27] "GET /js/imageProcessing.js HTTP/1.1" 200 -
+2025-12-01 13:40:27,912 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:27] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 13:40:27,914 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:27] code 404, message File not found
+2025-12-01 13:40:27,914 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:27] "GET /js/threeViewer.js HTTP/1.1" 404 -
+2025-12-01 13:40:27,915 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:27] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 13:40:27,917 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:27] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 13:40:32,114 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:32] "GET / HTTP/1.1" 200 -
+2025-12-01 13:40:32,141 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:32] code 404, message File not found
+2025-12-01 13:40:32,142 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:32] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+2025-12-01 13:40:32,736 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:32] "GET /js/icons.js HTTP/1.1" 200 -
+2025-12-01 13:40:33,046 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:33] "GET /js/imageProcessing.js HTTP/1.1" 200 -
+2025-12-01 13:40:33,048 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:33] "GET /js/geometryGenerator.js HTTP/1.1" 200 -
+2025-12-01 13:40:33,050 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:33] code 404, message File not found
+2025-12-01 13:40:33,050 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:33] "GET /js/threeViewer.js HTTP/1.1" 404 -
+2025-12-01 13:40:33,051 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:33] "GET /js/exporters.js HTTP/1.1" 200 -
+2025-12-01 13:40:33,052 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:33] "GET /js/app.js HTTP/1.1" 200 -
+2025-12-01 13:40:33,054 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:33] code 404, message File not found
+2025-12-01 13:40:33,054 - INFO - 127.0.0.1 - - [01/Dec/2025 13:40:33] "GET /favicon.ico HTTP/1.1" 404 -
+2025-12-01 13:41:27,652 - INFO - 
+Server stopped

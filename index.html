@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Geometric Relief Generator</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .debug-panel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.9);
+      color: #0f0;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 9999;
+      display: none;
+    }
+    .debug-panel.show {
+      display: block;
+    }
+    .debug-line {
+      padding: 2px 0;
+      border-bottom: 1px solid #333;
+    }
+    .debug-error { color: #f00; }
+    .debug-warn { color: #ff0; }
+    .debug-info { color: #0f0; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <div id="debug-panel" class="debug-panel"></div>
+  <button 
+    onclick="document.getElementById('debug-panel').classList.toggle('show')"
+    style="position: fixed; bottom: 10px; right: 10px; z-index: 10000; background: #333; color: #0f0; border: 1px solid #0f0; padding: 5px 10px; cursor: pointer; font-family: monospace;"
+  >
+    Toggle Debug
+  </button>
+  
+  <script type="text/babel" src="js/icons.js"></script>
+  <script type="text/babel" src="js/imageProcessing.js"></script>
+  <script type="text/babel" src="js/geometryGenerator.js"></script>
+  <script type="text/babel" src="js/threeViewer.js"></script>
+  <script type="text/babel" src="js/exporters.js"></script>
+  <script type="text/babel" src="js/app.js"></script>
+  
+  <script type="text/babel">
+    // Global debug function
+    window.debugLog = function(message, level = 'info') {
+      const panel = document.getElementById('debug-panel');
+      const time = new Date().toLocaleTimeString();
+      const line = document.createElement('div');
+      line.className = `debug-line debug-${level}`;
+      line.textContent = `[${time}] ${level.toUpperCase()}: ${message}`;
+      panel.appendChild(line);
+      panel.scrollTop = panel.scrollHeight;
+      
+      // Also log to console
+      console.log(`[${level.toUpperCase()}]`, message);
+    };
+    
+    // Catch all errors
+    window.onerror = function(msg, url, lineNo, columnNo, error) {
+      debugLog(`ERROR: ${msg} at ${url}:${lineNo}:${columnNo}`, 'error');
+      return false;
+    };
+    
+    debugLog('Application starting...');
+    
+    // Render app
+    try {
+      ReactDOM.render(<GeometricImageTo3D />, document.getElementById('root'));
+      debugLog('React app rendered successfully');
+    } catch (error) {
+      debugLog(`Failed to render app: ${error.message}`, 'error');
+    }
+  </script>
+</body>
+</html>
